@@ -47,14 +47,12 @@ fn main() {
     println!("{}\n{}\n{}\n{}\n", user2.email, user2.username, user2.active, user2.sign_in_count);
 
     /* 元组结构体（tuple structs）*/
-    // 普通元组 let user: (User, User)
+    // 和元组不同的地方，可以定义多个一样结构的元组。
     struct Color(i32, i32, i32);
     struct Point(i32, i32, i32);
-    let    test(i32, i32, i32);
 
     let black = Color(0, 0, 0);
     let origin = Point(0, 0, 0);
-    let test1 = test(0, 0, 0);
 }
 
 fn build_user(email: String, username: String) -> User {
