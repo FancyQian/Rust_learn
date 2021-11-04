@@ -1,6 +1,7 @@
 
 use std::fs;
 use std::error::Error;
+use std::env;
 
 pub struct GrepConfig {
     pub g_string: String,
@@ -8,13 +9,18 @@ pub struct GrepConfig {
 }
 
 impl GrepConfig {
-    pub fn new(args: &[String]) -> Result<GrepConfig, &'static str> {
-        if args.len() < 3 {
-            return Err("not enough arguments");
-        }
+    pub fn new(mut args: env::Args) -> Result<GrepConfig, &'static str> {
+        args.next();
 
-        let g_string = args[1].clone();
-        let g_file = args[2].clone();
+        let g_file = match args.next() {
+            Some(file) => file,
+            None => return Err("Miss file name!"),
+        };
+
+        let g_string = match args.next() {
+            Some(str) => str,
+            None => return Err("Miss search string!"),
+        };
 
         Ok(GrepConfig { g_string, g_file })
     }
@@ -27,14 +33,8 @@ impl GrepConfig {
     }
 
     fn search(full_ctx: & str, query_string: &str) -> Result<Vec<String>, &'static str> {
-        let mut v = Vec::new();
-        for line in full_ctx.lines() {
-            if line.contains(query_string)
-            {
-                v.push(String::from(line));
-            }
-        }
-
+        let v: Vec<String> = full_ctx.lines().filter(|line| line.contains(query_string)).collect();
+ 
         if v.len() == 0 {
             Err("Match 0 result!!!")
         } else {

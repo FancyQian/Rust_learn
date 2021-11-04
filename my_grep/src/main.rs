@@ -12,9 +12,7 @@ fn main() {
 
     env_logger::init();
 
-    let args: Vec<String>= env::args().collect();
-
-    let config = GrepConfig::new(&args).unwrap_or_else(|err| {
+    let config = GrepConfig::new(env::args()).unwrap_or_else(|err| {
         error!("Problem parsing arguments: {}", err);
         process::exit(1);
     });
